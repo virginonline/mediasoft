@@ -1,0 +1,37 @@
+spring:
+  main:
+    banner-mode: off
+  profiles:
+    active: prod
+  application:
+    name: mediasoft-warehouse
+  jpa:
+    hibernate:
+      ddl-auto: update
+---
+spring:
+  config:
+    activate:
+      on-profile: "dev"
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: mediasoft
+      password: password
+      driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+---
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+  datasource:
+    hikari:
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: jdbc:postgresql://postgres:5432/mediasoftdb
+      username: mediasoft
+      password: password
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
