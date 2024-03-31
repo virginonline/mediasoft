@@ -21,7 +21,7 @@ public class ProductMapper {
 
   public static ProductDto toDto(Product product) {
     return new ProductDto(product.getId(), product.getName(), product.getArticle(),
-        product.getCategory(), product.getDescription(), product.getPrice());
+        product.getCategory(), product.getDescription(),product.getQuantity(), product.getPrice());
   }
 
   public static List<Product> toEntity(List<ProductDto> dtos) {

@@ -17,6 +17,7 @@ public record ProductDto(
     @Nonnull @Schema(description = "product article", example = "123131231") Long article,
     @Nonnull @Schema(description = "product category", example = "category") String category,
     @Schema(description = "product description", example = "product example description") String description,
+    @Nonnull @Min(1) @Schema(description = "quantity", example = "1") Long quantity,
     @Nonnull @Min(1) @Schema(description = "product price", example = "1") BigDecimal price) implements
     Serializable {
 

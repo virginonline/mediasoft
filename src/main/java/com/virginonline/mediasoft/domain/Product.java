@@ -39,6 +39,8 @@ public class Product {
   private String category;
   @Column(name = "price", nullable = false)
   private BigDecimal price;
+  @Column(name = "quantity", nullable = false)
+  private Long quantity;
   @CreationTimestamp
   @Column(name = "created_at", updatable = false, nullable = false)
   private Instant createdAt;

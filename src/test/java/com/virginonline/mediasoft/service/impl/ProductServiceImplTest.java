@@ -40,7 +40,7 @@ class ProductServiceImplTest {
     // Arrange
     final ProductDto payload = new ProductDto(
         UUID.fromString("a8e7412c-4972-424a-af2d-933af8a322f9"), "name", 0L, "category",
-        "description",
+        "description", 1L,
         new BigDecimal("0.00"));
     when(mockProductRepository.existsByArticle(0L)).thenReturn(false);
 
