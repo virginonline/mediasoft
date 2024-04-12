@@ -27,7 +27,8 @@ public interface ProductControllerOpenApi {
   @GetMapping
   @Operation(description = "Get products", operationId = "getAllProducts")
   ResponseEntity<List<ProductDto.Response.Default>> getAll(
-      @Parameter(in = ParameterIn.QUERY, name = "category") @RequestParam(required = false, name = "category")
+      @Parameter(in = ParameterIn.QUERY, name = "category")
+          @RequestParam(required = false, name = "category")
           Optional<String> category,
       @Parameter(in = ParameterIn.QUERY, example = "20") @RequestParam(defaultValue = "20")
           Integer limit,
