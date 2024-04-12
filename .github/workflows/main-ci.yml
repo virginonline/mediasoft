@@ -9,9 +9,6 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: 📝 Set up Taskfile
-        uses: arduino/setup-task@v1
-
       - name: 📥 Set up Java
         uses: actions/setup-java@v4
         with:
@@ -30,13 +27,13 @@ jobs:
           echo 'org.gradle.daemon=false' >> ~/.gradle/gradle.properties
 
       - name: 🧪 Run tests
-        run: task build:test
+        run: ./gradlew test
 
       - name: 💡 Linter
         uses: pre-commit/action@v3.0.0
 
       - name: 🔨 Build
-        run: task build
+        run: ./gradlew bootJar
 
       - name: 🔐 Log in to Dockerhub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
