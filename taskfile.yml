@@ -11,7 +11,7 @@ tasks:
     deps:
       - build:clean
     cmds:
-      - gradlew bootJar
+      - ./gradlew bootJar
   build:check:
     desc: run tests and spotless linter
     deps:
@@ -21,14 +21,14 @@ tasks:
   build:test:
     desc: run tests
     cmds:
-      - gradlew test
+      - ./gradlew test
   build:spotless:
     desc: spotless linter
     cmds:
-      - gradlew spotlessApply
+      - ./gradlew spotlessApply
   build:clean:
     cmds:
-      - gradlew clean
+      - ./gradlew clean
   docker:build:
     desc: build docker image
     cmds:
