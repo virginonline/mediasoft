@@ -29,21 +29,29 @@ public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
+
   @Column(name = "name", nullable = false)
   private String name;
+
   @Column(unique = true, name = "article", nullable = false)
   private Long article;
+
   @Column(name = "description")
   private String description;
+
   @Column(name = "category")
   private String category;
+
   @Column(name = "price", nullable = false)
   private BigDecimal price;
+
   @Column(name = "quantity", nullable = false)
   private Long quantity;
+
   @CreationTimestamp
   @Column(name = "created_at", updatable = false, nullable = false)
   private Instant createdAt;
+
   @UpdateTimestamp
   @Column(name = "updated_at")
   private Instant updatedAt;

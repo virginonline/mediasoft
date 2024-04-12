@@ -1,0 +1,43 @@
+version: '3'
+vars:
+  IMAGE_NAME: virginonline/mediasoft
+  IMAGE_TAG: latest
+
+dotenv: [ '.env.{{.ENV}}' ]
+
+tasks:
+  build:
+    desc: build bootJar
+    deps:
+      - build:clean
+    cmds:
+      - gradlew bootJar
+  build:check:
+    desc: run tests and spotless linter
+    deps:
+      - build:spotless
+      - build:test
+      - build:clean
+  build:test:
+    desc: run tests
+    cmds:
+      - gradlew test
+  build:spotless:
+    desc: spotless linter
+    cmds:
+      - gradlew spotlessApply
+  build:clean:
+    cmds:
+      - gradlew clean
+  docker:build:
+    desc: build docker image
+    cmds:
+      - docker build -t {{.IMAGE_NAME}}:{{.IMAGE_TAG}} .
+  docker:push:
+    desc: push docker image
+    cmds:
+      - docker push virginonline/mediasoft
+  docker:compose:
+    desc: start docker compose
+    cmds:
+      - docker compose --env-file .env.production up -d

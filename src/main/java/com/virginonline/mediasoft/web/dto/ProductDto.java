@@ -1,24 +1,64 @@
 package com.virginonline.mediasoft.web.dto;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.Min;
-import java.io.Serializable;
+import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.UUID;
+import lombok.Builder;
 
-@Schema(name = "Product dto")
-@JsonNaming(SnakeCaseStrategy.class)
-public record ProductDto(
-    @Schema(description = "product id", format = "uuid", example = "0f143ec1-d466-4c25-93d0-84e9279742b8") UUID id,
-    @Nonnull @Schema(description = "product name", example = "product example") String name,
-    @Nonnull @Schema(description = "product article", example = "123131231") Long article,
-    @Nonnull @Schema(description = "product category", example = "category") String category,
-    @Schema(description = "product description", example = "product example description") String description,
-    @Nonnull @Min(1) @Schema(description = "quantity", example = "1") Long quantity,
-    @Nonnull @Min(1) @Schema(description = "product price", example = "1") BigDecimal price) implements
-    Serializable {
+/**
+ * Product dto
+ *
+ * @see <a href="https://blog.scottlogic.com/2020/01/03/rethinking-the-java-dto.html">Reference
+ *     implementation</a>
+ */
+public enum ProductDto {
+  ;
 
+  public enum Request {
+    ;
+
+    @Builder
+    @Schema(name = "Create request", description = "Product create request")
+    public record Create(
+        @Nonnull @NotBlank @Schema(description = "Product name") String name,
+        @Nonnull @Schema(description = "Product article") Long article,
+        @Nonnull @NotBlank @Schema(description = "Product description") String description,
+        @Nonnull @NotBlank @Schema(description = "Product description") String category,
+        @Nonnull @Min(1) @Schema(description = "Product price") BigDecimal price,
+        @Nonnull @Min(1) @Schema(description = "Product quantity") Long quantity) {}
+
+    @Builder
+    @Schema(name = "Patch request", description = "Product patch request")
+    public record Patch(
+        @Nonnull @NotBlank @Schema(description = "Product name") String name,
+        @Nonnull @Schema(description = "Product article") Long article,
+        @Nonnull @NotBlank @Schema(description = "Product description") String description,
+        @Nonnull @NotBlank @Schema(description = "Product description") String category,
+        @Nonnull @Min(1) @Schema(description = "Product price") BigDecimal price,
+        @Nonnull @Min(1) @Schema(description = "Product quantity") Long quantity) {}
+  }
+
+  public enum Response {
+    ;
+
+    @Builder
+    @Schema(name = "Product dto", description = "Default product response")
+    public record Default(
+        @Nonnull
+            @NotBlank
+            @Schema(
+                description = "Product id",
+                format = "uuid",
+                example = "0f143ec1-d466-4c25-93d0-84e9279742b8")
+            UUID id,
+        @Nonnull @NotBlank @Schema(description = "Product name") String name,
+        @Nonnull @Schema(description = "Product article") Long article,
+        @Nonnull @NotBlank @Schema(description = "Product description") String description,
+        @Nonnull @NotBlank @Schema(description = "Product description") String category,
+        @Nonnull @Min(1) @Schema(description = "Product price") BigDecimal price,
+        @Nonnull @Min(1) @Schema(description = "Product quantity") Long quantity) {}
+  }
 }

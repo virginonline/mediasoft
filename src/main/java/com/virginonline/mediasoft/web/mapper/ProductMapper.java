@@ -8,27 +8,31 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ProductMapper {
 
-  public static Product toEntity(ProductDto dto) {
+  public static Product toEntity(ProductDto.Request.Create dto) {
     return Product.builder()
-        .id(dto.id())
         .name(dto.name())
         .category(dto.category())
         .description(dto.description())
         .article(dto.article())
         .price(dto.price())
+        .quantity(dto.quantity())
         .build();
   }
 
-  public static ProductDto toDto(Product product) {
-    return new ProductDto(product.getId(), product.getName(), product.getArticle(),
-        product.getCategory(), product.getDescription(),product.getQuantity(), product.getPrice());
+  public static ProductDto.Response.Default toDto(Product product) {
+
+    return ProductDto.Response.Default.builder()
+        .id(product.getId())
+        .name(product.getName())
+        .article(product.getArticle())
+        .category(product.getCategory())
+        .quantity(product.getQuantity())
+        .price(product.getPrice())
+        .description(product.getDescription())
+        .build();
   }
 
-  public static List<Product> toEntity(List<ProductDto> dtos) {
-    return dtos.stream().map(ProductMapper::toEntity).toList();
-  }
-
-  public static List<ProductDto> toDto(List<Product> entities) {
-    return entities.stream().map(ProductMapper::toDto).toList();
+  public static List<ProductDto.Response.Default> toDto(List<Product> products) {
+    return products.stream().map(ProductMapper::toDto).toList();
   }
 }

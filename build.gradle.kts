@@ -4,6 +4,8 @@ plugins {
     java
     id("org.springframework.boot") version "3.2.4"
     id("io.spring.dependency-management") version "1.1.4"
+    id("com.diffplug.spotless") version "6.25.0"
+
 }
 
 group = "com.virginonline"
@@ -27,6 +29,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.liquibase:liquibase-core")
     compileOnly("org.projectlombok:lombok")
     implementation("jakarta.validation:jakarta.validation-api")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -38,6 +41,13 @@ dependencies {
 tasks.getByName<BootJar>("bootJar") {
     layered {
         enabled = true
+    }
+}
+spotless {
+    java {
+        trimTrailingWhitespace()
+        googleJavaFormat("1.22.0")
+        removeUnusedImports()
     }
 }
 tasks.withType<Test> {

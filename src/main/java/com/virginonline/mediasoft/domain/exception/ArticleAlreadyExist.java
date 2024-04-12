@@ -5,5 +5,4 @@ public class ArticleAlreadyExist extends RuntimeException {
   public ArticleAlreadyExist(String message) {
     super(message);
   }
-
 }

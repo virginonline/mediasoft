@@ -13,17 +13,13 @@ public class CustomControllerAdvice {
 
   @ExceptionHandler(ProductNotFound.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
-  public ExceptionBody handleResourceNotFound(
-      final ProductNotFound e
-  ) {
+  public ExceptionBody handleResourceNotFound(final ProductNotFound e) {
     return new ExceptionBody(e.getMessage());
   }
 
   @ExceptionHandler(ArticleAlreadyExist.class)
   @ResponseStatus(HttpStatus.BAD_GATEWAY)
-  public ExceptionBody handleResourceNotFound(
-      final ArticleAlreadyExist e
-  ) {
+  public ExceptionBody handleResourceNotFound(final ArticleAlreadyExist e) {
     return new ExceptionBody(e.getMessage());
   }
 

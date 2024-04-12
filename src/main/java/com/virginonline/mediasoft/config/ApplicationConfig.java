@@ -10,7 +10,7 @@ public class ApplicationConfig {
 
   @Bean
   public OpenAPI openAPI() {
-    return new OpenAPI().info(
-        new Info().title("Products api").description("product api docs").version("1.0.0"));
+    return new OpenAPI()
+        .info(new Info().title("Products api").description("product api docs").version("1.0.0"));
   }
 }
