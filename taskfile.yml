@@ -4,31 +4,32 @@ vars:
   IMAGE_TAG: latest
 
 dotenv: [ '.env.{{.ENV}}' ]
-
+includes:
+  #Cross-platform tasks
+  os:
+    taskfile: task/Taskfile_{{OS}}.yml
 tasks:
   build:
     desc: build bootJar
     deps:
-      - build:clean
-    cmds:
-      - ./gradlew bootJar
+      - os:build:clean
+    cmd:
+      task: os:build
   build:check:
     desc: run tests and spotless linter
-    deps:
-      - build:spotless
-      - build:test
-      - build:clean
+    cmd:
+      task: os:build:check
   build:test:
     desc: run tests
-    cmds:
-      - ./gradlew test
+    cmd:
+      task: os:build:test
   build:spotless:
     desc: spotless linter
-    cmds:
-      - ./gradlew spotlessApply
+    cmd:
+      task: os:build:spotless
   build:clean:
-    cmds:
-      - ./gradlew clean
+    cmd:
+      task: os:build:clean
   docker:build:
     desc: build docker image
     cmds:

@@ -1,0 +1,26 @@
+version: '3'
+
+tasks:
+  build:
+    desc: build bootJar
+    deps:
+      - build:clean
+    cmds:
+      - gradlew bootJar
+  build:check:
+    desc: run tests and spotless linter
+    deps:
+      - build:spotless
+      - build:test
+      - build:clean
+  build:test:
+    desc: run tests
+    cmds:
+      - gradlew test
+  build:spotless:
+    desc: spotless linter
+    cmds:
+      - gradlew spotlessApply
+  build:clean:
+    cmds:
+      - gradlew clean
