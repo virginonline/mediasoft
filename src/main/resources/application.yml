@@ -3,6 +3,3 @@ spring:
     banner-mode: off
   application:
     name: mediasoft-warehouse
-  jpa:
-    hibernate:
-      ddl-auto: update

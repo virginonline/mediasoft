@@ -7,3 +7,10 @@ spring:
       password: ${POSTGRES_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/changelog.xml
+    default-schema: public
+    drop-first: false

@@ -9,6 +9,9 @@ includes:
   os:
     taskfile: task/Taskfile_{{OS}}.yml
 tasks:
+  dotenv:
+    desc: create.env.production from .env.production.example
+    cmd: cp .env.production.example .env.production
   build:
     desc: build bootJar
     deps:
@@ -16,7 +19,6 @@ tasks:
     cmd:
       task: os:build
   build:check:
-    desc: run tests and spotless linter
     cmd:
       task: os:build:check
   build:test:
@@ -24,7 +26,6 @@ tasks:
     cmd:
       task: os:build:test
   build:spotless:
-    desc: spotless linter
     cmd:
       task: os:build:spotless
   build:clean:
