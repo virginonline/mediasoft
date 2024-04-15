@@ -27,7 +27,6 @@ public class ProductController implements ProductControllerOpenApi {
   @Override
   public ResponseEntity<List<Default>> getAll(
       Optional<String> category, Integer limit, Integer offset) {
-    log.info("getAll(category={}, limit={}, offset={})", category, limit, offset);
     var response =
         category
             .map(c -> productService.findAll(c, PageRequest.of(offset, limit)))
