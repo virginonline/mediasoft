@@ -12,13 +12,13 @@ import org.springframework.util.StopWatch;
 @Slf4j
 @Aspect
 @Component
-public class TransactionTimeAspect {
+public class TransactionAspect {
 
   @Before(
-      "@annotation(com.virginonline.mediasoft.annotation.Timed) && (@within(org.springframework.transaction.annotation.Transactional) || @annotation(org.springframework.transaction.annotation.Transactional))")
+      "@annotation(com.virginonline.mediasoft.annotation.Timed) && @annotation(org.springframework.transaction.annotation.Transactional))")
   public void monitor(JoinPoint pjp) {
     var className = pjp.getTarget().getClass().getSimpleName();
-    var stopwatch = new StopWatch("Transaction in class=" + className);
+    var stopwatch = new StopWatch(className);
     stopwatch.start();
     log.info("Transaction method={} started", className);
     TransactionSynchronizationManager.registerSynchronization(
