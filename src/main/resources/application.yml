@@ -7,6 +7,6 @@ spring:
 app:
   scheduling:
     period: ${SCHEDULER_PERIOD:6000} #ms
-    optimized: ${SCHEDULER_OPTIMIZED:false}
+    optimized: ${SCHEDULER_OPTIMIZED:true}
     enabled: ${SCHEDULER_ENABLED:true}
   priceChangePercentage: 10
