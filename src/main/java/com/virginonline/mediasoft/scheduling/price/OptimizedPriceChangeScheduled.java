@@ -3,6 +3,7 @@ package com.virginonline.mediasoft.scheduling.price;
 import com.virginonline.mediasoft.annotation.Timed;
 import com.virginonline.mediasoft.domain.Product;
 import com.virginonline.mediasoft.scheduling.AbstractPriceChangeScheduled;
+import jakarta.persistence.LockModeType;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,13 +28,15 @@ public class OptimizedPriceChangeScheduled extends AbstractPriceChangeScheduled 
   @Timed
   @Scheduled(fixedRateString = "${app.scheduling.period}")
   @Transactional(rollbackFor = Exception.class)
+  @Lock(LockModeType.PESSIMISTIC_WRITE)
   protected void execute() {
     try (var writer =
         Files.newBufferedWriter(
             Paths.get("log.txt"), StandardOpenOption.APPEND, StandardOpenOption.CREATE)) {
       var products =
           jdbcTemplate.query(
-              "select article, price from products", new BeanPropertyRowMapper<>(Product.class));
+              "select article, price from products for update",
+              new BeanPropertyRowMapper<>(Product.class));
       jdbcTemplate.batchUpdate(
           "update products set price = ?, updated_at = now() where article = ?",
           new BatchPreparedStatementSetter() {
