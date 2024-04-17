@@ -11,6 +11,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Used stream api to update all products avg time for execute 800sec
+ *
+ * @deprecated use {@link OptimizedPriceChangeScheduled}
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class StandardPriceChangeScheduled extends AbstractPriceChangeScheduled {

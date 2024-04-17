@@ -21,6 +21,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
+/** Optimized price scheduled avg time for execute 46sec */
 @Slf4j
 @RequiredArgsConstructor
 public class OptimizedPriceChangeScheduled extends AbstractPriceChangeScheduled {
@@ -49,6 +50,7 @@ public class OptimizedPriceChangeScheduled extends AbstractPriceChangeScheduled 
               ps.setLong(2, products.get(i).getArticle());
               logProduct(i, writer, products.get(i), newPrice);
             }
+
             @Override
             public int getBatchSize() {
               return products.size();
