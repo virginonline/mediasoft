@@ -23,8 +23,10 @@ public class StandardPriceChangeScheduled extends AbstractPriceChangeScheduled {
   @Lock(value = LockModeType.OPTIMISTIC)
   @Override
   protected void execute() {
-    var products = productRepository.findAll();
-    products.forEach(product -> product.setPrice(getNewPrice(product.getPrice())));
+    var products =
+        productRepository.findAll().stream()
+            .peek(product -> getNewPrice(product.getPrice()))
+            .toList();
     productRepository.saveAll(products);
   }
 }
