@@ -49,7 +49,6 @@ public class OptimizedPriceChangeScheduled extends AbstractPriceChangeScheduled 
               ps.setLong(2, products.get(i).getArticle());
               logProduct(i, writer, products.get(i), newPrice);
             }
-
             @Override
             public int getBatchSize() {
               return products.size();
