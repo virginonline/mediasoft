@@ -1,6 +1,5 @@
 package com.virginonline.mediasoft.service.impl;
 
-import com.virginonline.mediasoft.annotation.Timed;
 import com.virginonline.mediasoft.domain.Product;
 import com.virginonline.mediasoft.domain.exception.ArticleAlreadyExist;
 import com.virginonline.mediasoft.domain.exception.ProductNotFound;
@@ -13,7 +12,6 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +45,6 @@ public class ProductServiceImpl implements ProductService {
     return productRepository.save(existing);
   }
 
-  @Timed
   @Override
   public Product findById(UUID id) {
     return productRepository
@@ -55,9 +52,7 @@ public class ProductServiceImpl implements ProductService {
         .orElseThrow(() -> new ProductNotFound("Product with %s not found".formatted(id)));
   }
 
-  @Timed
   @Override
-  @Transactional
   public List<Product> findAll(Pageable pageable) {
     return productRepository.findAllPaginated(pageable);
   }
