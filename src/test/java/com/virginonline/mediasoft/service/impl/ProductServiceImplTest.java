@@ -10,9 +10,7 @@ import com.virginonline.mediasoft.domain.Product;
 import com.virginonline.mediasoft.domain.exception.ProductNotFound;
 import com.virginonline.mediasoft.repository.ProductRepository;
 import com.virginonline.mediasoft.web.dto.ProductDto;
-import com.virginonline.mediasoft.web.mapper.ProductMapper;
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,6 +19,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,6 +29,7 @@ class ProductServiceImplTest {
   @Mock private ProductRepository mockProductRepository;
 
   private ProductServiceImpl productServiceImplUnderTest;
+  private final PageRequest page = PageRequest.of(0, 20);
 
   @BeforeEach
   void setUp() {
@@ -175,19 +176,6 @@ class ProductServiceImplTest {
   }
 
   @Test
-  void givenNoProducts_whenFindAll_thenReturnEmptyList() {
-    // Arrange
-    when(mockProductRepository.findAllPaginated(PageRequest.of(0, 20)))
-        .thenReturn(Collections.emptyList());
-
-    // Act
-    final List<Product> result = productServiceImplUnderTest.findAll(PageRequest.of(0, 20));
-
-    // Assert
-    assertThat(result).isEqualTo(Collections.emptyList());
-  }
-
-  @Test
   void givenProducts_whenFindAll_thenReturnProductList() {
     // Arrange
     final List<Product> products =
@@ -201,48 +189,14 @@ class ProductServiceImplTest {
                 .category("category")
                 .price(new BigDecimal("0.00"))
                 .build());
-    when(mockProductRepository.findAllPaginated(PageRequest.of(0, 20))).thenReturn(products);
 
-    // Act
-    final List<Product> result = productServiceImplUnderTest.findAll(PageRequest.of(0, 20));
+    Page<Product> pageResult = new PageImpl<>(products, page, products.size());
 
-    // Assert
-    assertThat(ProductMapper.toDto(products)).isEqualTo(ProductMapper.toDto(result));
-  }
-
-  @Test
-  void givenNoProductsInCategory_whenFindAllByCategory_thenReturnEmptyList() {
     // Arrange
-    when(mockProductRepository.findAllByCategory("category", PageRequest.of(0, 20)))
-        .thenReturn(Collections.emptyList());
+    when(mockProductRepository.findAll(page)).thenReturn(pageResult);
 
     // Act
-    final List<Product> result =
-        productServiceImplUnderTest.findAll("category", PageRequest.of(0, 20));
-
-    // Assert
-    assertThat(result).isEqualTo(Collections.emptyList());
-  }
-
-  @Test
-  void givenProductsInCategory_whenFindAllByCategory_thenReturnProductList() {
-    // Arrange
-    final List<Product> products =
-        List.of(
-            Product.builder()
-                .id(UUID.fromString("9c1fc1a8-45a0-48eb-8b31-35b035cdc83f"))
-                .name("name")
-                .article(0L)
-                .description("description")
-                .category("category")
-                .price(new BigDecimal("0.00"))
-                .build());
-    when(mockProductRepository.findAllByCategory("category", PageRequest.of(0, 20)))
-        .thenReturn(products);
-
-    // Act
-    final List<Product> result =
-        productServiceImplUnderTest.findAll("category", PageRequest.of(0, 20));
+    final List<Product> result = productServiceImplUnderTest.findAll(page);
 
     // Assert
     assertThat(result).isEqualTo(products);

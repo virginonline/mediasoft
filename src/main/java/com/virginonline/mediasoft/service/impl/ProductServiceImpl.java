@@ -1,5 +1,7 @@
 package com.virginonline.mediasoft.service.impl;
 
+import com.virginonline.mediasoft.criteria.JpaSpecificationsBuilder;
+import com.virginonline.mediasoft.criteria.field.Field;
 import com.virginonline.mediasoft.domain.Product;
 import com.virginonline.mediasoft.domain.exception.ArticleAlreadyExist;
 import com.virginonline.mediasoft.domain.exception.ProductNotFound;
@@ -10,17 +12,23 @@ import com.virginonline.mediasoft.web.mapper.ProductMapper;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
   private final ProductRepository productRepository;
+  private final JpaSpecificationsBuilder<Product> jpaSpecificationsBuilder =
+      new JpaSpecificationsBuilder<>();
 
   @Override
   public Product create(ProductDto.Request.Create payload) {
+
     if (productRepository.existsByArticle(payload.article())) {
       throw new ArticleAlreadyExist(
           "Product with %d article already exist".formatted(payload.article()));
@@ -54,11 +62,13 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public List<Product> findAll(Pageable pageable) {
-    return productRepository.findAllPaginated(pageable);
+    return productRepository.findAll(pageable).getContent();
   }
 
   @Override
-  public List<Product> findAll(String category, Pageable pageable) {
-    return productRepository.findAllByCategory(category, pageable);
+  public List<Product> findAllByCriteria(PageRequest of, List<Field> criteria) {
+    var criteries = jpaSpecificationsBuilder.buildSpecification(criteria);
+    var products = productRepository.findAll(criteries, of);
+    return products.getContent();
   }
 }

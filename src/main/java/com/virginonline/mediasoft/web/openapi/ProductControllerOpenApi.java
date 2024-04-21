@@ -1,5 +1,6 @@
 package com.virginonline.mediasoft.web.openapi;
 
+import com.virginonline.mediasoft.criteria.field.Field;
 import com.virginonline.mediasoft.web.dto.ProductDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -8,7 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +27,19 @@ public interface ProductControllerOpenApi {
   @GetMapping
   @Operation(description = "Get products", operationId = "getAllProducts")
   ResponseEntity<List<ProductDto.Response.Default>> getAll(
-      @Parameter(in = ParameterIn.QUERY, name = "category")
-          @RequestParam(required = false, name = "category")
-          Optional<String> category,
       @Parameter(in = ParameterIn.QUERY, example = "20") @RequestParam(defaultValue = "20")
           Integer limit,
       @Parameter(in = ParameterIn.QUERY, example = "0") @RequestParam(defaultValue = "0")
           Integer offset);
+
+  @PostMapping("/search")
+  @Operation(description = "Search products", operationId = "searchProducts")
+  ResponseEntity<List<ProductDto.Response.Default>> search(
+      @Parameter(in = ParameterIn.QUERY, example = "20") @RequestParam(defaultValue = "20")
+          Integer limit,
+      @Parameter(in = ParameterIn.QUERY, example = "0") @RequestParam(defaultValue = "0")
+          Integer offset,
+      @RequestBody final List<Field> criteria);
 
   @PostMapping
   @Operation(description = "Create new product", operationId = "createProduct")

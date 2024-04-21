@@ -1,9 +1,11 @@
 package com.virginonline.mediasoft.service;
 
+import com.virginonline.mediasoft.criteria.field.Field;
 import com.virginonline.mediasoft.domain.Product;
 import com.virginonline.mediasoft.web.dto.ProductDto;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
@@ -18,5 +20,5 @@ public interface ProductService {
 
   List<Product> findAll(Pageable pageable);
 
-  List<Product> findAll(String category, Pageable pageable);
+  List<Product> findAllByCriteria(PageRequest of, List<Field> criteria);
 }
