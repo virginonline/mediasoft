@@ -3,6 +3,7 @@ package com.virginonline.mediasoft.criteria.field;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.virginonline.mediasoft.criteria.Operation;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class Field {
+  @NotNull
   protected String field;
+  @NotNull
   protected Operation operation;
 }

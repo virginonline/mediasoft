@@ -12,6 +12,8 @@ import jakarta.persistence.criteria.Predicate;
 
 public class EqualsPredicateBuilder implements PredicateBuilder {
 
+
+
   @Override
   public Operation getPredicateOperator() {
     return Operation.EQUALS;
