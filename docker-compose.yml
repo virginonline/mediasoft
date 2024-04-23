@@ -17,6 +17,9 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_DB: ${POSTGRES_DB}
+      SCHEDULER_ENABLED: ${SCHEDULER_ENABLED}
+      SCHEDULER_PERIOD: ${SCHEDULER_PERIOD}
+      SCHEDULER_OPTIMIZED: ${SCHEDULER_OPTIMIZED}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     depends_on:
@@ -24,6 +27,7 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
+
   postgres:
     container_name: postgres
     image: postgres:15-alpine

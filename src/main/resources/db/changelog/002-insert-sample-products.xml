@@ -1,0 +1,33 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+  <changeSet id="2" author="Ivan Didichenko">
+    <sql dbms="postgresql">
+      WITH uuids AS (SELECT generate_series(1, 1000000) AS idx, gen_random_uuid() AS uuid),
+           prices AS (SELECT idx, round((random() * 100::numeric + 1):: numeric, 2) AS price
+                      FROM generate_series(1, 1000000) AS idx),
+           quantities AS (SELECT idx, round((random() * 100::numeric + 1):: numeric) AS quantity
+                          FROM generate_series(1, 1000000) AS idx),
+           categories AS (SELECT idx,
+                                 (array['Category1', 'Category2', 'Category3',
+                                  'Category4'])[floor(random() * 4) + 1] AS category
+      FROM generate_series(1, 1000000) AS idx
+        )
+      INSERT
+      INTO public.products(id, name, article, description, category, price, quantity, created_at)
+      SELECT u.uuid,
+             'Product' || u.idx,
+             u.idx AS article,
+             'Description' || substring(md5(random()::text), 1, 10), --description
+             c.category,
+             p.price,
+             q.quantity,
+             now() AS created_at
+      FROM uuids u
+             JOIN categories c ON u.idx = c.idx
+             JOIN prices p ON u.idx = p.idx
+             JOIN quantities q ON u.idx = q.idx ON CONFLICT DO NOTHING;
+    </sql>
+  </changeSet>
+</databaseChangeLog>

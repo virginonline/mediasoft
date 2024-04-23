@@ -3,3 +3,10 @@ spring:
     banner-mode: off
   application:
     name: mediasoft-warehouse
+
+app:
+  scheduling:
+    period: ${SCHEDULER_PERIOD:6000} #ms
+    mode: ${SCHEDULER_OPTIMIZED:optimized} #optimized, standard
+    enabled: ${SCHEDULER_ENABLED:true}
+  priceChangePercentage: 10

@@ -8,12 +8,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.Builder;
 
-/**
- * Product dto
- *
- * @see <a href="https://blog.scottlogic.com/2020/01/03/rethinking-the-java-dto.html">Reference
- *     implementation</a>
- */
 public enum ProductDto {
   ;
 
