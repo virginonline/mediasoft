@@ -1,13 +1,19 @@
 package com.virginonline.mediasoft.scheduling.price;
 
 import com.virginonline.mediasoft.annotation.Timed;
+import com.virginonline.mediasoft.domain.Product;
 import com.virginonline.mediasoft.repository.ProductRepository;
 import com.virginonline.mediasoft.scheduling.AbstractPriceChangeScheduled;
 import jakarta.persistence.LockModeType;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @deprecated use {@link OptimizedPriceChangeScheduled}
  */
+@Profile("prod")
+@ConditionalOnExpression(
+    "${app.scheduling.enabled} == true and '${app.scheduling.mode}'.equals('standard')")
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class StandardPriceChangeScheduled extends AbstractPriceChangeScheduled {
 
@@ -28,10 +38,14 @@ public class StandardPriceChangeScheduled extends AbstractPriceChangeScheduled {
   @Lock(value = LockModeType.OPTIMISTIC)
   @Override
   protected void execute() {
-    var products =
+    List<Product> products =
         productRepository.findAll().stream()
-            .peek(product -> getNewPrice(product.getPrice()))
-            .toList();
+            .map(
+                product -> {
+                  product.setPrice(getNewPrice(product.getPrice()));
+                  return product;
+                })
+            .collect(Collectors.toList());
     productRepository.saveAll(products);
   }
 }

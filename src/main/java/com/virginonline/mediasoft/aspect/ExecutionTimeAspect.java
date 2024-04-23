@@ -16,13 +16,20 @@ public class ExecutionTimeAspect {
   public Object executionTime(ProceedingJoinPoint point) throws Throwable {
     var stopwatch = new StopWatch();
     stopwatch.start();
-    Object object = point.proceed();
-    stopwatch.stop();
-    log.info(
-        "Class Name: {}. Method: {}. Time elapsed: {}ms",
-        point.getSignature().getDeclaringTypeName(),
-        point.getSignature().getName(),
-        stopwatch.getTotalTimeMillis());
+    Object object;
+    try {
+      object = point.proceed();
+    } catch (Throwable e) {
+      log.error(e.getMessage(), e);
+      throw e;
+    } finally {
+      stopwatch.stop();
+      log.info(
+          "Class Name: {}. Method: {}. Time elapsed: {}ms",
+          point.getSignature().getDeclaringTypeName(),
+          point.getSignature().getName(),
+          stopwatch.getTotalTimeMillis());
+    }
     return object;
   }
 }
