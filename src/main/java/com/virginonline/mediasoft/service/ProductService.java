@@ -1,6 +1,6 @@
 package com.virginonline.mediasoft.service;
 
-import com.virginonline.mediasoft.criteria.field.Field;
+import com.virginonline.mediasoft.criteria.filter.Filter;
 import com.virginonline.mediasoft.domain.Product;
 import com.virginonline.mediasoft.web.dto.ProductDto;
 import java.util.List;
@@ -20,5 +20,5 @@ public interface ProductService {
 
   List<Product> findAll(Pageable pageable);
 
-  List<Product> findAllByCriteria(PageRequest of, List<Field> criteria);
+  List<Product> findAllByCriteria(PageRequest of, List<Filter> criteria);
 }

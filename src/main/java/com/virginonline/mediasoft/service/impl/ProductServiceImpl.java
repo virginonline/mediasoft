@@ -1,7 +1,7 @@
 package com.virginonline.mediasoft.service.impl;
 
 import com.virginonline.mediasoft.criteria.JpaSpecificationsBuilder;
-import com.virginonline.mediasoft.criteria.field.Field;
+import com.virginonline.mediasoft.criteria.filter.Filter;
 import com.virginonline.mediasoft.domain.Product;
 import com.virginonline.mediasoft.domain.exception.ArticleAlreadyExist;
 import com.virginonline.mediasoft.domain.exception.ProductNotFound;
@@ -66,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public List<Product> findAllByCriteria(PageRequest of, List<Field> criteria) {
+  public List<Product> findAllByCriteria(PageRequest of, List<Filter> criteria) {
     var criteries = jpaSpecificationsBuilder.buildSpecification(criteria);
     var products = productRepository.findAll(criteries, of);
     return products.getContent();

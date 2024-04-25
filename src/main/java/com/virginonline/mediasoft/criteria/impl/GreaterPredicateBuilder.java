@@ -2,9 +2,9 @@ package com.virginonline.mediasoft.criteria.impl;
 
 import com.virginonline.mediasoft.criteria.Operation;
 import com.virginonline.mediasoft.criteria.PredicateBuilder;
-import com.virginonline.mediasoft.criteria.field.DateField;
-import com.virginonline.mediasoft.criteria.field.Field;
-import com.virginonline.mediasoft.criteria.field.PriceField;
+import com.virginonline.mediasoft.criteria.filter.DateFilter;
+import com.virginonline.mediasoft.criteria.filter.Filter;
+import com.virginonline.mediasoft.criteria.filter.NumericFilter;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
@@ -17,10 +17,10 @@ public class GreaterPredicateBuilder implements PredicateBuilder {
   }
 
   @Override
-  public Predicate getPredicate(CriteriaBuilder cb, Path path, Field field) {
-    return switch (field.getClass().getSimpleName()) {
-      case "PriceField" -> cb.greaterThan(path, ((PriceField) field).getValue());
-      case "DateField" -> cb.greaterThan(path, ((DateField) field).getValue());
+  public Predicate getPredicate(CriteriaBuilder cb, Path path, Filter filter) {
+    return switch (filter.getClass().getSimpleName()) {
+      case "NumericFilter" -> cb.greaterThan(path, ((NumericFilter) filter).getValue());
+      case "DateFilter" -> cb.greaterThan(path, ((DateFilter) filter).getValue());
       default -> cb.isNull(path);
     };
   }

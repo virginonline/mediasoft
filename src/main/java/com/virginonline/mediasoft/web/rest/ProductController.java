@@ -1,6 +1,6 @@
 package com.virginonline.mediasoft.web.rest;
 
-import com.virginonline.mediasoft.criteria.field.Field;
+import com.virginonline.mediasoft.criteria.filter.Filter;
 import com.virginonline.mediasoft.service.ProductService;
 import com.virginonline.mediasoft.web.dto.ProductDto.Request.Create;
 import com.virginonline.mediasoft.web.dto.ProductDto.Request.Patch;
@@ -31,7 +31,8 @@ public class ProductController implements ProductControllerOpenApi {
   }
 
   @Override
-  public ResponseEntity<List<Default>> search(Integer limit, Integer offset, List<Field> criteria) {
+  public ResponseEntity<List<Default>> search(
+      Integer limit, Integer offset, List<Filter> criteria) {
     log.info("criteria: {}", criteria);
     return ResponseEntity.ok(
         ProductMapper.toDto(

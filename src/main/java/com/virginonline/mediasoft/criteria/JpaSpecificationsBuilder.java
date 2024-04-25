@@ -1,6 +1,6 @@
 package com.virginonline.mediasoft.criteria;
 
-import com.virginonline.mediasoft.criteria.field.Field;
+import com.virginonline.mediasoft.criteria.filter.Filter;
 import com.virginonline.mediasoft.criteria.impl.EqualsPredicateBuilder;
 import com.virginonline.mediasoft.criteria.impl.GreaterOrEqualsPredicateBuilder;
 import com.virginonline.mediasoft.criteria.impl.GreaterPredicateBuilder;
@@ -36,11 +36,11 @@ public class JpaSpecificationsBuilder<T> {
                   Operation.LIKE, new LikePredicateBuilder()))
           .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-  public Specification<T> buildSpecification(List<Field> criterion) {
+  public Specification<T> buildSpecification(List<Filter> criterion) {
     return (root, query, cb) -> buildPredicate(root, cb, criterion);
   }
 
-  private Predicate buildPredicate(Root<T> root, CriteriaBuilder cb, List<Field> criterion) {
+  private Predicate buildPredicate(Root<T> root, CriteriaBuilder cb, List<Filter> criterion) {
     List<Predicate> predicates = new ArrayList<>();
     criterion.forEach(
         field -> {

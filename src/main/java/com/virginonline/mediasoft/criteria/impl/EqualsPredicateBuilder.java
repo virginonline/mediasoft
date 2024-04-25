@@ -2,17 +2,15 @@ package com.virginonline.mediasoft.criteria.impl;
 
 import com.virginonline.mediasoft.criteria.Operation;
 import com.virginonline.mediasoft.criteria.PredicateBuilder;
-import com.virginonline.mediasoft.criteria.field.DateField;
-import com.virginonline.mediasoft.criteria.field.Field;
-import com.virginonline.mediasoft.criteria.field.NameField;
-import com.virginonline.mediasoft.criteria.field.PriceField;
+import com.virginonline.mediasoft.criteria.filter.DateFilter;
+import com.virginonline.mediasoft.criteria.filter.Filter;
+import com.virginonline.mediasoft.criteria.filter.NameFilter;
+import com.virginonline.mediasoft.criteria.filter.NumericFilter;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 
 public class EqualsPredicateBuilder implements PredicateBuilder {
-
-
 
   @Override
   public Operation getPredicateOperator() {
@@ -20,11 +18,11 @@ public class EqualsPredicateBuilder implements PredicateBuilder {
   }
 
   @Override
-  public Predicate getPredicate(CriteriaBuilder cb, Path path, Field field) {
-    return switch (field.getClass().getSimpleName()) {
-      case "PriceField" -> cb.equal(path, ((PriceField) field).getValue());
-      case "DateField" -> cb.equal(path, ((DateField) field).getValue());
-      case "NameField" -> cb.equal(path, ((NameField) field).getValue());
+  public Predicate getPredicate(CriteriaBuilder cb, Path path, Filter filter) {
+    return switch (filter.getClass().getSimpleName()) {
+      case "NumericFilter" -> cb.equal(path, ((NumericFilter) filter).getValue());
+      case "DateFilter" -> cb.equal(path, ((DateFilter) filter).getValue());
+      case "NameFilter" -> cb.equal(path, ((NameFilter) filter).getValue());
       default -> cb.isNull(path);
     };
   }

@@ -1,6 +1,6 @@
 package com.virginonline.mediasoft.web.openapi;
 
-import com.virginonline.mediasoft.criteria.field.Field;
+import com.virginonline.mediasoft.criteria.filter.Filter;
 import com.virginonline.mediasoft.web.dto.ProductDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,7 +39,7 @@ public interface ProductControllerOpenApi {
           Integer limit,
       @Parameter(in = ParameterIn.QUERY, example = "0") @RequestParam(defaultValue = "0")
           Integer offset,
-      @RequestBody final List<Field> criteria);
+      @RequestBody final List<Filter> criteria);
 
   @PostMapping
   @Operation(description = "Create new product", operationId = "createProduct")

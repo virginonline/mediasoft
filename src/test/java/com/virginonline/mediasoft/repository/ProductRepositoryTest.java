@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.virginonline.mediasoft.criteria.JpaSpecificationsBuilder;
 import com.virginonline.mediasoft.criteria.Operation;
-import com.virginonline.mediasoft.criteria.field.NameField;
-import com.virginonline.mediasoft.criteria.field.PriceField;
+import com.virginonline.mediasoft.criteria.filter.NameFilter;
+import com.virginonline.mediasoft.criteria.filter.NumericFilter;
 import com.virginonline.mediasoft.domain.Product;
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,6 +13,8 @@ import java.util.UUID;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -28,8 +30,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 public class ProductRepositoryTest {
 
+  private static final Logger log = LoggerFactory.getLogger(ProductRepositoryTest.class);
+
   @Container
-  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:14-alpine");
+  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine");
 
   PageRequest page = PageRequest.of(0, 20);
   @Autowired ProductRepository repository;
@@ -73,7 +77,13 @@ public class ProductRepositoryTest {
 
   @Test
   void shouldFindAllBySingleCriteria() {
-    var specs = builder.buildSpecification(List.of(new NameField(Operation.LIKE, "Product 0")));
+    var nameFilter = new NameFilter(Operation.EQUALS, "Product 6");
+    log.info(
+        "criteria: {} {} {}",
+        nameFilter.getField(),
+        nameFilter.getOperation(),
+        nameFilter.getValue());
+    var specs = builder.buildSpecification(List.of(nameFilter));
     var products = repository.findAll(specs, page).toList();
     assertThat(products.size()).isEqualTo(1);
   }
@@ -83,12 +93,10 @@ public class ProductRepositoryTest {
     var specs =
         builder.buildSpecification(
             List.of(
-                new NameField(Operation.LIKE, "Product 6"),
-                new PriceField(Operation.LESS_THAN, new BigDecimal(130)),
-                new PriceField(Operation.GREATER_THAN, new BigDecimal(20))));
+                new NameFilter(Operation.LIKE, "Product 6"),
+                new NumericFilter(Operation.LESS_THAN, new BigDecimal(130)),
+                new NumericFilter(Operation.GREATER_THAN, new BigDecimal(20))));
     var products = repository.findAll(specs, page).getContent();
-    products.forEach(
-        product -> System.out.println(product.getName() + " price: " + product.getPrice()));
     assertThat(products.size()).isEqualTo(4);
   }
 }

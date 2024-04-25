@@ -9,7 +9,7 @@ public enum Operation {
   GRATER_THAN_OR_EQ(">="),
   LESS_THAN("<"),
   LESS_THAN_OR_EQ("<="),
-  LIKE("%");
+  LIKE("~");
 
   private final String value;
 
