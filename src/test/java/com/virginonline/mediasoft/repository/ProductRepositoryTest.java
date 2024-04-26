@@ -13,8 +13,6 @@ import java.util.UUID;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -29,8 +27,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
 public class ProductRepositoryTest {
-
-  private static final Logger log = LoggerFactory.getLogger(ProductRepositoryTest.class);
 
   @Container
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine");
@@ -78,11 +74,6 @@ public class ProductRepositoryTest {
   @Test
   void shouldFindAllBySingleCriteria() {
     var nameFilter = new NameFilter(Operation.EQUALS, "Product 6");
-    log.info(
-        "criteria: {} {} {}",
-        nameFilter.getField(),
-        nameFilter.getOperation(),
-        nameFilter.getValue());
     var specs = builder.buildSpecification(List.of(nameFilter));
     var products = repository.findAll(specs, page).toList();
     assertThat(products.size()).isEqualTo(1);
